@@ -75,7 +75,7 @@ app.use(limiter3);
 // Verify Passcode Endpoint
 app.post('/api/verify-passcode', (req, res) => {
   const { passcode } = req.body;
-  const correctPasscode = process.env.APP_PASSCODE || 'jimmyliao'; // Default fallback
+  const correctPasscode = process.env.APP_PASSCODE; // Must be set via environment variable
 
   if (passcode === correctPasscode) {
     res.json({ success: true });
