@@ -35,7 +35,7 @@ const createLimiter = (configStr, defaultWindow, defaultMax, message) => {
     keyGenerator: (req) => {
       // Create a unique key based on IP. 
       // In Cloud Run/Express, req.ip is populated correctly with 'trust proxy' set.
-      return req.ip; 
+      return req.ip;
     }
   });
 };
@@ -43,25 +43,25 @@ const createLimiter = (configStr, defaultWindow, defaultMax, message) => {
 // --- Rate Limit Configuration ---
 // Limit 1: 1 minute (60000ms), 5 requests
 const limiter1 = createLimiter(
-  process.env.RATE_LIMIT_SHORT, 
-  60 * 1000, 
-  5, 
+  process.env.RATE_LIMIT_SHORT,
+  60 * 1000,
+  5,
   'Rate limit exceeded: You can only make 5 requests per minute.'
 );
 
 // Limit 2: 5 minutes (300000ms), 30 requests
 const limiter2 = createLimiter(
-  process.env.RATE_LIMIT_MEDIUM, 
-  5 * 60 * 1000, 
-  30, 
+  process.env.RATE_LIMIT_MEDIUM,
+  5 * 60 * 1000,
+  30,
   'Rate limit exceeded: You can only make 30 requests per 5 minutes.'
 );
 
 // Limit 3: 10 minutes (600000ms), 80 requests
 const limiter3 = createLimiter(
-  process.env.RATE_LIMIT_LONG, 
-  10 * 60 * 1000, 
-  80, 
+  process.env.RATE_LIMIT_LONG,
+  10 * 60 * 1000,
+  80,
   'Rate limit exceeded: You can only make 80 requests per 10 minutes.'
 );
 
@@ -75,8 +75,8 @@ app.use(limiter3);
 // Verify Passcode Endpoint
 app.post('/api/verify-passcode', (req, res) => {
   const { passcode } = req.body;
-  const correctPasscode = process.env.APP_PASSCODE; // Removed default fallback for security
-  
+  const correctPasscode = process.env.APP_PASSCODE || 'jimmyliao'; // Default fallback
+
   if (passcode === correctPasscode) {
     res.json({ success: true });
   } else {
