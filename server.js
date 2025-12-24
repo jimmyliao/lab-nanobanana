@@ -77,7 +77,8 @@ app.post('/api/verify-passcode', (req, res) => {
   const { passcode } = req.body;
   const correctPasscode = process.env.APP_PASSCODE; // Must be set via environment variable
 
-  if (passcode === correctPasscode) {
+  // Ensure correctPasscode is defined and not empty to prevent bypass if environment variable is missing
+  if (correctPasscode && passcode === correctPasscode) {
     res.json({ success: true });
   } else {
     res.status(401).json({ success: false, message: 'Invalid passcode' });
